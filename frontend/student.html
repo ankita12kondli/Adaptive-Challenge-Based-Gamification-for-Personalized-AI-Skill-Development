@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College AI Learning Zone (CS & Engineering) - SkillSpring AI</title>
+  <link rel="stylesheet" href="student.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="font-normal">
+
+  <!-- Top Navigation Bar & Student HUD -->
+  <header class="student-header">
+    <div class="student-header-inner">
+      <a href="index.html" class="student-brand">
+        <div class="student-brand-icon">🎓</div>
+        <div>
+          <div class="student-brand-title">SkillSpring AI</div>
+          <div class="student-brand-sub">College AI Hub (Computer Science & Engineering)</div>
+        </div>
+      </a>
+
+      <!-- Real-Time Student HUD Controls -->
+      <div class="student-hud-controls">
+        <!-- Active Student Profile Pill -->
+        <div class="hud-pill student-profile" id="studentProfilePill" title="Click to update student profile">
+          <span>👨‍💻</span>
+          <span id="hudStudentName">Student Scholar</span>
+          <span class="hud-sub-badge" id="hudStudentDegree">CS & Engineering</span>
+          <span style="font-size: 0.8rem; color: #3b82f6;">✏️</span>
+        </div>
+
+        <div class="hud-pill stars" title="Total Stars & Points">
+          <span>⭐</span>
+          <span id="hudStudentStars">0</span>
+        </div>
+
+        <div class="hud-pill streak" title="Daily Learning Streak">
+          <span>🔥</span>
+          <span id="hudStudentStreak">1 Day</span>
+        </div>
+
+        <div class="hud-pill progress" title="Completed Topics out of 30">
+          <span>📚</span>
+          <span id="hudStudentProgress">0 / 30 Topics</span>
+        </div>
+
+        <div class="hud-pill badges" title="Unlocked Engineering Badges">
+          <span>🎖️</span>
+          <span id="hudStudentBadges">0</span>
+        </div>
+
+        <!-- Quick Action Modals -->
+        <button type="button" class="btn-hud-action" id="btnOpenConceptMap" title="View AI Concept Roadmap">
+          🗺️ Concept Map
+        </button>
+
+        <button type="button" class="btn-hud-action" id="btnOpenPlayground" title="Open In-Browser Python Lab">
+          💻 Python Lab
+        </button>
+
+        <button type="button" class="btn-hud-action cert-btn" id="btnOpenStudentCert" title="View Official Certificate">
+          📜 Certificate
+        </button>
+
+        <button type="button" class="btn-hud-logout" id="studentLogoutBtn" title="Logout or Switch User">
+          🚪 Logout
+        </button>
+
+        <a href="index.html" class="btn-student-home">← Home</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="student-main-container">
+    <!-- Hero Section -->
+    <section class="student-hero">
+      <div class="student-hero-inner">
+        <div class="student-hero-content">
+          <div class="student-badge-tag">
+            <span>🚀</span> Undergraduate & Engineering AI Curriculum
+          </div>
+          <h1>College AI Learning Zone: From Foundations to Generative Systems</h1>
+          <p>
+            An interactive, hands-on learning environment for computer science and engineering students. Master 30 core
+            AI concepts across 5 progressive levels through theory, real-world case studies, animated pipeline
+            visualizers, concept games, technical quizzes, and Python challenges.
+          </p>
+          <div class="student-hero-actions">
+            <button type="button" class="btn-hero-primary" id="heroStartTopic1Btn">
+              ▶️ Start Topic 1: Introduction to AI ➡️
+            </button>
+            <button type="button" class="btn-hero-secondary" id="heroConceptMapBtn">
+              🗺️ Explore 30-Topic Concept Map
+            </button>
+            <button type="button" class="btn-hero-secondary" id="heroPlaygroundBtn">
+              💻 Launch Python Lab
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Stats Overview Card -->
+        <div class="student-overview-card">
+          <div class="overview-header">
+            <h3>📊 Curriculum Architecture</h3>
+            <span class="overview-tag">30 Topics • 5 Levels</span>
+          </div>
+          <div class="overview-levels-list">
+            <div class="overview-level-item">
+              <span class="lvl-bullet" style="background: #2563eb;">L1</span>
+              <div>
+                <strong>AI Fundamentals</strong>
+                <p>7 Topics (Search, Agents, Logic, Knowledge Graphs)</p>
+              </div>
+            </div>
+            <div class="overview-level-item">
+              <span class="lvl-bullet" style="background: #059669;">L2</span>
+              <div>
+                <strong>Machine Learning</strong>
+                <p>8 Topics (Regression, Classification, Clustering, Validation)</p>
+              </div>
+            </div>
+            <div class="overview-level-item">
+              <span class="lvl-bullet" style="background: #7c3aed;">L3</span>
+              <div>
+                <strong>Deep Learning & Neural Networks</strong>
+                <p>6 Topics (MLPs, Backpropagation, CNNs, RNNs, NLP)</p>
+              </div>
+            </div>
+            <div class="overview-level-item">
+              <span class="lvl-bullet" style="background: #d97706;">L4</span>
+              <div>
+                <strong>Generative AI & Modern Systems</strong>
+                <p>6 Topics (LLMs, Transformers, Prompting, RAG, Agents)</p>
+              </div>
+            </div>
+            <div class="overview-level-item">
+              <span class="lvl-bullet" style="background: #dc2626;">L5</span>
+              <div>
+                <strong>Advanced & Responsible AI</strong>
+                <p>3 Topics (Vision, Reinforcement Learning, Ethics/XAI)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level Filter Navigation Bar -->
+    <section class="student-filter-section">
+      <div class="level-filter-bar">
+        <button type="button" class="level-filter-tab active" data-level="all">
+          <span>🌟</span> All Levels (30 Topics)
+        </button>
+        <button type="button" class="level-filter-tab" data-level="1">
+          <span>🌱</span> Level 1: AI Fundamentals (7)
+        </button>
+        <button type="button" class="level-filter-tab" data-level="2">
+          <span>⚙️</span> Level 2: Machine Learning (8)
+        </button>
+        <button type="button" class="level-filter-tab" data-level="3">
+          <span>🧠</span> Level 3: Deep Learning (6)
+        </button>
+        <button type="button" class="level-filter-tab" data-level="4">
+          <span>✨</span> Level 4: Generative AI (6)
+        </button>
+        <button type="button" class="level-filter-tab" data-level="5">
+          <span>🛡️</span> Level 5: Advanced AI (3)
+        </button>
+      </div>
+    </section>
+
+    <!-- 30-Topic Cards Grid -->
+    <section class="student-topics-section">
+      <div class="topics-grid" id="studentTopicsGrid">
+        <!-- Rendered dynamically by student.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Study Modal Window (6-Activity Learning Engine) -->
+  <div id="collegeStudyModal" class="student-modal-overlay hidden">
+    <div class="student-study-box">
+      <!-- Modal Header -->
+      <div class="study-box-header">
+        <div class="study-header-text">
+          <h3 id="modalTopicTitle">1. Introduction to Artificial Intelligence</h3>
+          <p id="modalTopicSubtitle">Foundations, Evolution & Real-World Intelligence Systems</p>
+        </div>
+        <button type="button" class="study-modal-close" id="closeStudyModalBtn" title="Close topic">&times;</button>
+      </div>
+
+      <!-- Quick Navigation Tabs -->
+      <div class="study-nav-tabs">
+        <button type="button" class="study-tab-btn active" data-tab="all">
+          <span>🌟</span> Complete Experience
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="learn">
+          <span>📘</span> 1. Learn & History
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="realWorld">
+          <span>🌍</span> 2. Real-World Systems
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="visual">
+          <span>🔬</span> 3. Visual Demo
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="game">
+          <span>🎮</span> 4. Concept Game
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="quiz">
+          <span>📝</span> 5. Assessment Quiz
+        </button>
+        <button type="button" class="study-tab-btn" data-tab="complete">
+          <span>🎉</span> 6. Topic Mastery
+        </button>
+      </div>
+
+      <!-- Main Study Content Area -->
+      <div class="study-content-panel" id="collegeModalContent">
+        <!-- Injected dynamically by student.js -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="study-box-footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-complete-topic" id="btnCompleteTopicFooter">
+          ✓ Mark Topic Completed (+50 ⭐)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Concept Map Modal -->
+  <div id="conceptMapModal" class="student-modal-overlay hidden">
+    <div class="student-study-box" style="max-width: 1040px;">
+      <div class="study-box-header">
+        <div class="study-header-text">
+          <h3>🗺️ College AI Concept Map & Knowledge Architecture</h3>
+          <p>Visual relationship graph connecting all 30 concepts across 5 progressive levels</p>
+        </div>
+        <button type="button" class="study-modal-close" id="closeConceptMapBtn">&times;</button>
+      </div>
+      <div class="study-content-panel">
+        <div class="concept-map-container" id="conceptMapContainer">
+          <!-- Dynamic Concept Map rendered by student.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Browser Python Lab Playground Modal -->
+  <div id="codePlaygroundModal" class="student-modal-overlay hidden">
+    <div class="student-study-box" style="max-width: 1000px;">
+      <div class="study-box-header">
+        <div class="study-header-text">
+          <h3>💻 In-Browser Python Lab & Code Playground</h3>
+          <p>Experiment with Python algorithms, data structures, and AI logic in real time</p>
+        </div>
+        <button type="button" class="study-modal-close" id="closePlaygroundBtn">&times;</button>
+      </div>
+      <div class="study-content-panel">
+        <div class="playground-layout">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <strong style="color: #0f172a; font-size: 1rem;">Python 3 Interactive Sandbox:</strong>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-code-action" id="btnRunPlaygroundCode"
+                  style="background: #2563eb; color: white;">
+                  ▶️ Execute Code
+                </button>
+                <button type="button" class="btn-code-action" id="btnClearPlaygroundCode"
+                  style="background: #f1f5f9; color: #334155;">
+                  Clear
+                </button>
+              </div>
+            </div>
+            <textarea id="playgroundCodeInput" class="code-editor-textarea" rows="14" spellcheck="false" placeholder="# Type or paste any Python program here and click 'Execute Code' to run...
+# Example:
+# print('Hello from SkillSpring AI!')
+# for i in range(1, 6):
+#     print(f'Epoch {i}: Training accuracy = {0.80 + i * 0.03:.2f}')
+"></textarea>
+          </div>
+          <div>
+            <strong style="color: #0f172a; font-size: 1rem; display: block; margin-bottom: 8px;">Terminal
+              Output:</strong>
+            <div id="playgroundTerminalOutput" class="terminal-output-box">
+              <span class="term-line">> Ready to execute Python code. Type your code above and click 'Execute
+                Code'.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Profile Sign-In / Switch Modal -->
+  <div id="studentProfileModal" class="student-modal-overlay hidden">
+    <div class="student-study-box" style="max-width: 500px; padding: 24px;">
+      <button type="button" class="study-modal-close" id="closeStudentProfileBtn"
+        style="position: absolute; top: 16px; right: 16px;">&times;</button>
+      <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">👨‍💻🎓</div>
+      <h3 style="font-size: 1.6rem; font-weight: 800; color: #1e3a8a; text-align: center; margin-bottom: 6px;">
+        Student Scholar Profile
+      </h3>
+      <p style="font-size: 0.95rem; color: #64748b; text-align: center; margin-bottom: 20px;">
+        Track your 30 college AI topics, complete Python labs, and earn your official verified certificate.
+      </p>
+
+      <form id="studentProfileForm">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #334155;">
+            Student Full Name:
+          </label>
+          <input type="text" id="studentNameInput" placeholder="Enter your name (e.g. Alex, Rahul...)" required 
+            style="width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1.05rem; font-weight: 700; outline: none;" />
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #334155;">
+            College / University:
+          </label>
+          <input type="text" id="studentCollegeInput" placeholder="Enter college / institute name"
+            style="width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1rem; outline: none;" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #334155;">
+            Degree & Track:
+          </label>
+          <select id="studentDegreeSelect"
+            style="width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1rem; font-weight: 700; outline: none; background: white;">
+            <option value="MCA (Master of Computer Applications)">MCA (Master of Computer Applications)</option>
+            <option value="B.Tech / B.E. Computer Science & Engineering">B.Tech / B.E. Computer Science & Engineering
+            </option>
+            <option value="B.Tech / B.E. Artificial Intelligence & Data Science">B.Tech / B.E. Artificial Intelligence &
+              Data Science</option>
+            <option value="BCA (Bachelor of Computer Applications)">BCA (Bachelor of Computer Applications)</option>
+            <option value="M.Tech / M.S. Computer Science">M.Tech / M.S. Computer Science</option>
+            <option value="General Engineering Scholar">General Engineering Scholar</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-hero-primary"
+          style="width: 100%; padding: 14px; font-size: 1.1rem; justify-content: center;">
+          💾 Save Profile & Continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Official College AI Certification Modal -->
+  <div id="studentCertModal" class="student-modal-overlay hidden">
+    <div class="student-study-box" style="max-width: 960px; padding: 24px;">
+      <button type="button" class="study-modal-close" id="closeStudentCertBtn"
+        style="position: absolute; top: 16px; right: 16px;">&times;</button>
+
+      <div id="studentCertPrintArea" class="student-cert-preview">
+        <div class="cert-crest">🎓🎖️</div>
+        <h2 class="cert-title">Certificate of AI Engineering Mastery</h2>
+        <div class="cert-sub">College AI Learning Hub • Undergraduate & Graduate Curriculum</div>
+
+        <p style="font-size: 1.15rem; color: #475569; margin-top: 14px;">This is proudly awarded to</p>
+        <div class="cert-candidate" id="certStudentName">Student Scholar</div>
+        <div class="cert-college-name" id="certStudentCollege">Department of Computer Science & Engineering</div>
+
+        <p class="cert-desc">
+          For demonstrated academic excellence and practical laboratory proficiency across <strong>all 30 Core
+            Foundations of Artificial Intelligence</strong>, spanning Classical Search Heuristics, Machine Learning
+          Algorithms, Deep Neural Architectures, Transformers & Large Language Models, and Ethical Explainable AI.
+        </p>
+
+        <div class="cert-score-badge" id="certStudentScore">
+          ✓ Verified Academic Mastery Score: 100% | 30 / 30 Curriculum Topics Completed
+        </div>
+
+        <div class="cert-signatures">
+          <div class="sig-block">
+            <div class="sig-cursive">SkillSpring Academic Directorate</div>
+            <div class="sig-name">Director of AI Education</div>
+            <div class="sig-title">SkillSpring College Learning Academy</div>
+            <div class="sig-title">Accredited Engineering Track</div>
+          </div>
+          <div class="sig-block">
+            <div class="sig-cursive" id="certStudentDate">17-Nov-2026</div>
+            <div class="sig-name">SkillSpring AI</div>
+            <div class="sig-title">Autonomous Adaptive Learning Platform</div>
+            <div class="sig-title">Credential ID: SKILL-2026-ENG-AI-30</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="cert-actions-row" id="studentCertActions">
+        <button type="button" class="btn-cert-download" id="btnDownloadStudentCertPng">
+          <span>📥</span> Download Certificate (PNG Image)
+        </button>
+        <button type="button" class="btn-cert-print" id="btnPrintStudentCertPdf">
+          <span>🖨️</span> Print / Save as PDF (Single Page)
+        </button>
+        <button type="button" class="btn-student-home" id="closeStudentCertBtnBottom">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="student_data.js"></script>
+  <script src="student.js"></script>
+</body>
+
+</html>

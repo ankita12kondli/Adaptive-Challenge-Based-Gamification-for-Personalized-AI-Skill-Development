@@ -1,0 +1,20 @@
+# Environment variables & secrets
+.env
+*.env.local
+
+# Dependency directories
+node_modules/
+
+# Scratch & temporary development scripts
+scratch/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini

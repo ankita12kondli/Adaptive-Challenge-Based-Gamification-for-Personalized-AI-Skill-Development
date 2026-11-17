@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adult Learning Zone (35+ Years) - SkillSpring AI</title>
+  <link rel="stylesheet" href="adult.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="font-normal">
+
+  <!-- Top Navigation Bar -->
+  <header class="adult-header">
+    <div class="adult-header-inner">
+      <a href="index.html" class="adult-brand">
+        <div class="adult-brand-icon">🧠</div>
+        <div>
+          <div class="adult-brand-title">SkillSpring AI</div>
+          <div class="adult-brand-sub">AI Learning for Everyone (35+ Years)</div>
+        </div>
+      </a>
+
+      <!-- Accessibility & User Controls -->
+      <div class="adult-hud-controls">
+        <!-- Font Size Magnifier for Senior Adults -->
+        <div class="font-size-adjuster" title="Adjust text size for easier reading">
+          <button class="font-btn active" id="fontBtnNormal" data-font="font-normal">A</button>
+          <button class="font-btn" id="fontBtnLarge" data-font="font-large" style="font-size: 1.05rem;">A+</button>
+          <button class="font-btn" id="fontBtnXLarge" data-font="font-xlarge" style="font-size: 1.2rem;">A++</button>
+        </div>
+
+        <!-- Active Learner Pill -->
+        <div class="adult-hud-pill profile" id="adultProfilePill" title="Click to view or switch learner">
+          <span>👤</span>
+          <span id="adultHudName">Learner</span>
+          <span style="font-size: 0.8rem; background: #bbf7d0; padding: 2px 8px; border-radius: 9999px;" id="adultHudAge">Age 35+</span>
+        </div>
+
+        <div class="adult-hud-pill" title="Total Stars Earned">
+          <span>⭐</span>
+          <span id="adultHudStars">0</span>
+        </div>
+
+        <button class="btn-adult-logout" id="adultLogoutBtn" title="Log out or switch learner">
+          🚪 Logout
+        </button>
+
+        <a href="index.html" class="btn-adult-home">← Home</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="adult-container">
+    
+    <!-- Hero Banner -->
+    <section class="adult-hero">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+        <div>
+          <h1>AI Learning for Everyone – Start Your AI Journey</h1>
+          <p>
+            Understand Artificial Intelligence from the beginning, at your own comfortable pace. Even if you only use WhatsApp and YouTube, these 20 guided lessons will help you discover everyday AI tools, write letters, translate languages, and protect your digital banking safety.
+          </p>
+          <div class="adult-hero-tags">
+            <span class="adult-hero-tag">🌱 Understand AI</span>
+            <span class="adult-hero-tag">🛠️ Explore Real Tools</span>
+            <span class="adult-hero-tag">✍️ Practice Prompting</span>
+            <span class="adult-hero-tag">🛡️ Stay Safe Online</span>
+            <span class="adult-hero-tag">🎓 Earn Certificate</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress & Certificate Banner -->
+    <section class="adult-progress-card">
+      <div class="progress-header-row">
+        <div class="progress-title-block">
+          <h3>Your Learning Progress</h3>
+          <p>Complete lessons & interactive practices to earn stars and your completion certificate.</p>
+        </div>
+        <div class="progress-actions-block">
+          <div class="lessons-count-pill" id="adultProgressCounter">0 / 20 Lessons Completed</div>
+          <button class="btn-cert-view" id="openCertBtn" title="View your completion certificate">
+            🎓 View Certificate
+          </button>
+          <button class="btn-cert-view" id="openAdultResetBtn" title="Reset all lessons and start fresh from Level 1" style="background: #f1f5f9; color: #475569; border: 1.5px solid #cbd5e1;">
+            🔄 Reset to Level 1
+          </button>
+        </div>
+      </div>
+      <div class="adult-progress-track">
+        <div class="adult-progress-fill" id="adultProgressFill"></div>
+      </div>
+    </section>
+
+    <!-- Level Filter Navigation Tabs -->
+    <section class="level-nav-container" id="levelFilterTabs">
+      <button class="level-filter-tab active" data-level="all">
+        <span>📚</span> All 20 Lessons
+      </button>
+      <button class="level-filter-tab" data-level="1">
+        <span>🌱</span> Level 1: AI Basics (1–5)
+      </button>
+      <button class="level-filter-tab" data-level="2">
+        <span>💬</span> Level 2: Start Using AI (6–10)
+      </button>
+      <button class="level-filter-tab" data-level="3">
+        <span>💼</span> Level 3: AI in Daily Life (11–15)
+      </button>
+      <button class="level-filter-tab" data-level="4">
+        <span>🛡️</span> Level 4: Smart & Safe AI User (16–20)
+      </button>
+    </section>
+
+    <!-- Interactive Level Showcase (Animated visual activities & grandparent-friendly practice) -->
+    <section id="levelInteractiveShowcase" class="level-showcase-box" style="display: none;"></section>
+
+    <!-- 20 Lessons Cards Grid -->
+    <section class="lessons-grid" id="adultLessonsGrid">
+      <!-- Populated dynamically by adult.js -->
+    </section>
+
+  </main>
+
+  <!-- Interactive Study Modal Window (6-Section Learning Structure) -->
+  <div id="adultStudyModal" class="adult-modal-overlay hidden">
+    <div class="adult-study-box">
+      <!-- Header -->
+      <div class="study-box-header">
+        <div class="study-header-text">
+          <h3 id="modalLessonTitle">1. Introduction to Artificial Intelligence</h3>
+          <p id="modalLessonSubtitle">What is AI and why does it matter to you?</p>
+        </div>
+        <button class="study-modal-close" id="closeStudyModalBtn" title="Close lesson">&times;</button>
+      </div>
+
+      <!-- Interactive Study Navigation Tabs -->
+      <div class="study-nav-tabs">
+        <button class="study-tab-btn active" data-tab="all">
+          <span>🌟</span> Complete Lesson (All Sections)
+        </button>
+        <button class="study-tab-btn" data-tab="basics">
+          <span>📖</span> 1. Learn Basics
+        </button>
+        <button class="study-tab-btn" data-tab="realLife">
+          <span>💡</span> 2. Real-Life Example
+        </button>
+        <button class="study-tab-btn" data-tab="understand">
+          <span>🔍</span> 3. Watch & Understand
+        </button>
+        <button class="study-tab-btn" data-tab="quiz">
+          <span>📝</span> 4. Questions & Activities
+        </button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="study-content-panel" id="modalTabContent">
+        <!-- Content injected dynamically by adult.js -->
+      </div>
+
+      <!-- Footer Action -->
+      <div style="background: #f8fafc; border-top: 2px solid #e2e8f0; padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 24px 24px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-adult-home" id="btnPrevTab" style="cursor: pointer;">
+            ← Previous Section
+          </button>
+          <button type="button" class="btn-adult-home" id="btnNextTab" style="background: #e0e7ff; color: #1e3a8a; border-color: #93c5fd; cursor: pointer;">
+            Next Section ➡️
+          </button>
+        </div>
+        <button class="btn-lesson-open" id="btnCompleteLesson" style="background: #059669; padding: 10px 24px; font-size: 1.05rem;">
+          ✓ Mark Lesson Completed (+10 ⭐)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learner Profile Sign-In / Switch Modal -->
+  <div id="adultProfileModal" class="adult-modal-overlay hidden">
+    <div style="background: white; border-radius: 24px; padding: 32px; max-width: 480px; width: 92vw; box-shadow: 0 25px 60px rgba(0,0,0,0.25); border: 3px solid #93c5fd;">
+      <button class="study-modal-close" id="closeProfileModalBtn" style="float: right;">&times;</button>
+      <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">👤🌸</div>
+      <h3 style="font-size: 1.6rem; font-weight: 800; color: #1e3a8a; text-align: center; margin-bottom: 6px;">
+        Learner Profile
+      </h3>
+      <p style="font-size: 0.95rem; color: #64748b; text-align: center; margin-bottom: 20px;">
+        Enter your name and age to track your 20 lessons and receive your completion certificate.
+      </p>
+
+      <form id="adultProfileForm">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #334155;">
+            Your Full Name:
+          </label>
+          <input type="text" id="adultNameInput" placeholder="Enter your name (e.g. Ramesh, Sunita...)" required 
+            style="width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1.05rem; font-weight: 700; outline: none;" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #334155;">
+            Age Group:
+          </label>
+          <select id="adultAgeSelect" style="width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1rem; font-weight: 700; background: white;">
+            <option value="35–45 Years" selected>35 to 45 Years</option>
+            <option value="46–55 Years">46 to 55 Years</option>
+            <option value="56–65 Years">56 to 65 Years</option>
+            <option value="65+ Years">65+ Years (Senior)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-lesson-open" style="width: 100%; padding: 14px; font-size: 1.1rem; background: #1e3a8a;">
+          Save & Start Learning ➡️
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- In-Page Logout Confirmation Dialog -->
+  <div id="adultLogoutConfirmModal" class="adult-modal-overlay hidden">
+    <div style="background: white; border-radius: 24px; padding: 28px 24px; max-width: 440px; width: 92vw; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 4px solid #fca5a5; animation: popIn 0.25s ease;">
+      <div style="font-size: 3.2rem; margin-bottom: 8px;">🚪👋</div>
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;" id="adultLogoutTitle">
+        Log out from SkillSpring AI?
+      </h3>
+      <p style="font-size: 0.98rem; color: #64748b; margin-bottom: 22px;">
+        Are you sure you want to log out and switch to another learner profile?
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn-adult-home" id="cancelAdultLogoutBtn" style="padding: 10px 22px; font-size: 1rem; cursor: pointer;">
+          ❌ No, Stay Here
+        </button>
+        <button type="button" class="btn-lesson-open" id="confirmAdultLogoutBtn" style="background: #ef4444; border: 2px solid #dc2626; color: white; padding: 10px 24px; font-size: 1rem; cursor: pointer;">
+          🚪 Yes, Log Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Official Completion Certificate Modal -->
+  <div id="adultCertModal" class="adult-modal-overlay hidden">
+    <div class="adult-study-box" style="max-width: 900px; padding: 24px;">
+      <button class="study-modal-close" id="closeCertModalBtn" style="position: absolute; top: 16px; right: 16px;">&times;</button>
+      
+      <div id="certPrintArea" class="cert-preview-box">
+        <div class="cert-seal">🎖️</div>
+        <h2 class="cert-title">Certificate of Completion</h2>
+        <div class="cert-sub">Adaptive AI Skill Development & Digital Literacy (Ages 35+)</div>
+
+        <p style="font-size: 1.1rem; color: #475569; margin-top: 10px;">This is proudly awarded to</p>
+        <div class="cert-candidate" id="certCandidateName">Learner</div>
+
+        <p class="cert-desc">
+          For successfully completing all <strong>20 Foundations of Artificial Intelligence</strong> lessons, including AI in Everyday Life, ChatGPT & Prompt Writing, Language Translation, Document Summaries, and Cybersecurity & Banking Fraud Prevention.
+        </p>
+
+        <div style="margin: 20px 0; font-size: 1.1rem; font-weight: 800; color: #059669;" id="certCompletionScore">
+          ✓ Verified Mastery Score: 100% | 20 / 20 Lessons Mastered
+        </div>
+
+        <div class="cert-signatures">
+          <div class="sig-block">
+            <div style="font-family: cursive; font-size: 1.4rem; color: #1e3a8a;">SkillSpring Academic Board</div>
+            <div class="sig-name">Director of Education</div>
+            <div class="sig-title">SkillSpring AI Academy</div>
+            <div class="sig-title">Verified Public Online Certification</div>
+          </div>
+          <div class="sig-block">
+            <div style="font-family: cursive; font-size: 1.4rem; color: #1e3a8a;" id="certSignDate">17-Nov-2026</div>
+            <div class="sig-name">SkillSpring AI</div>
+            <div class="sig-title">Autonomous Adaptive Learning Platform</div>
+            <div class="sig-title">Credential ID: SKILL-2026-AI-ADULT</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;" id="certActionsRow">
+        <button type="button" class="btn-lesson-open" id="btnDownloadCertPng" style="background: #059669; padding: 12px 26px; font-size: 1.05rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+          <span>📥</span> Download Certificate (PNG Image)
+        </button>
+        <button type="button" class="btn-lesson-open" id="btnPrintCertPdf" style="background: #2563eb; padding: 12px 26px; font-size: 1.05rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+          <span>🖨️</span> Print / Save as PDF (Single Page)
+        </button>
+        <button type="button" class="btn-adult-home" id="closeCertBtnBottom" style="padding: 12px 24px; font-size: 1.05rem; cursor: pointer;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Page Custom Reset Confirmation Dialog -->
+  <div id="adultResetConfirmModal" class="adult-modal-overlay hidden">
+    <div style="background: white; border-radius: 24px; padding: 28px 24px; max-width: 440px; width: 92vw; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 3px solid #cbd5e1; animation: popIn 0.25s ease;">
+      <div style="font-size: 3rem; margin-bottom: 8px;">🔄🌱</div>
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+        Start Fresh from Level 1?
+      </h3>
+      <p style="font-size: 0.98rem; color: #64748b; margin-bottom: 22px;">
+        This will clear your completed lessons and stars so you can practice everything from the beginning.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn-adult-home" id="cancelAdultResetBtn" style="padding: 10px 22px; font-size: 1rem; cursor: pointer;">
+          ❌ No, Keep My Progress
+        </button>
+        <button type="button" class="btn-lesson-open" id="confirmAdultResetBtn" style="background: #2563eb; padding: 10px 24px; font-size: 1rem; cursor: pointer;">
+          🔄 Yes, Start from Level 1
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Data and Application Scripts -->
+  <script src="adult_data.js"></script>
+  <script src="adult.js"></script>
+</body>
+</html>

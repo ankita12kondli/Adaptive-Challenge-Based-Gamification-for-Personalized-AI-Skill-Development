@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids AI Adventure World - SkillSpring AI</title>
+  <link rel="stylesheet" href="kids.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation & Game HUD Bar -->
+  <header class="kids-nav">
+    <div class="kids-nav-inner">
+      <a href="index.html" class="kids-brand">
+        <div class="brand-robot-avatar">🤖</div>
+        <div class="brand-text">
+          <h1>AI Adventure World</h1>
+          <span>⭐ Free & Direct Access</span>
+        </div>
+      </a>
+
+      <!-- Real-time Player HUD -->
+      <div class="kids-hud-stats">
+        <!-- Active Child Profile Pill -->
+        <div class="hud-pill child-profile" id="childProfilePill" title="Click to view or switch player" style="cursor: pointer; background: #eff6ff; border-color: #93c5fd; color: #1e40af;">
+          <span id="hudChildAvatar">🤖</span>
+          <span id="hudChildName">Little Explorer</span>
+          <span style="font-size: 0.75rem; background: #dbeafe; padding: 2px 8px; border-radius: 9999px;" id="hudChildGrade">Class 3</span>
+          <span style="font-size: 0.8rem; color: #3b82f6; margin-left: 2px;">🔄</span>
+        </div>
+
+        <div class="hud-pill stars" title="Total Stars Collected">
+          <span>⭐</span>
+          <span id="hudStars">0</span>
+        </div>
+        <div class="hud-pill streak" title="Daily Learning Streak">
+          <span>🔥</span>
+          <span id="hudStreak">1 Day</span>
+        </div>
+        <div class="hud-pill badges" title="Unlocked Badges">
+          <span>🎖️</span>
+          <span id="hudBadges">0</span>
+        </div>
+        <button class="hud-pill logout-btn" id="childLogoutBtn" title="Logout / Switch Student" style="cursor: pointer; background: #fee2e2; border-color: #fca5a5; color: #991b1b; font-weight: 700;">
+          <span>🚪</span> Logout
+        </button>
+        <a href="index.html" class="btn-back-home">← Home</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="kids-main-container">
+    <!-- Main Welcome Hub Hero -->
+    <section class="hub-hero">
+      <div class="hub-hero-grid">
+        <div>
+          <span class="hub-hero-badge">🚀 Kids AI Fun Zone</span>
+          <h2>Welcome to AI Adventure World!</h2>
+          <p>
+            Play fun games and learn with Robo-Buddy! 🤖✨
+          </p>
+          <div class="hub-cta-buttons">
+            <button class="btn-kids-3d btn-kids-green" id="startLearningBtn" onclick="game.startLearningNow()">
+              🎮 Start Playing ➡️
+            </button>
+            <button class="btn-kids-3d btn-kids-white" id="continueLearningBtn" onclick="game.continueLearningNow()">
+              🗺️ View All Games
+            </button>
+          </div>
+        </div>
+
+        <!-- Animated Mascot Companion -->
+        <div class="robot-mascot-card" id="mascotBuddyCard" style="cursor: pointer;" title="Click Robo-Buddy to play!">
+          <div class="mascot-character">🤖</div>
+          <strong style="color: #0f172a; font-size: 1.1rem;">Robo-Buddy</strong>
+          <div class="mascot-speech-bubble" id="mascotBubble">
+            👋 Hi! Tap a game below to play!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Navigation Hub -->
+    <section class="quick-nav-cards">
+      <div class="q-card q-daily" id="dailyNavCard">
+        <div class="q-icon">⚡</div>
+        <div class="q-info">
+          <h3>Daily Fun</h3>
+          <p>Solve 3 easy mini-games for ⭐ stars!</p>
+        </div>
+      </div>
+
+      <div class="q-card q-rewards" id="rewardsNavCard">
+        <div class="q-icon">🏆</div>
+        <div class="q-info">
+          <h3>My Badges</h3>
+          <p>See your collected badges!</p>
+        </div>
+      </div>
+
+      <div class="q-card q-progress" id="progressNavCard">
+        <div class="q-icon">📈</div>
+        <div class="q-info">
+          <h3>My Stars</h3>
+          <p>See how many games you finished!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overall Learning Progress Card -->
+    <section class="overall-progress-card" id="overallProgressCard">
+      <div class="progress-header-flex">
+        <div>
+          <h3>🌟 My Star Progress</h3>
+          <span style="font-size: 0.85rem; color: #64748b;">Complete games to earn stars & badges!</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="progress-counter" id="progressRatio">0 / 15 Games</div>
+          <button type="button" id="resetProgressBtn" title="Reset my progress back to 0" style="background: white; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s;">
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFillBar"></div>
+      </div>
+    </section>
+
+    <!-- Visual Learning Worlds Map Section -->
+    <section class="map-section-title">
+      <h2>🗺️ Choose a Game to Play (15 AI Games)</h2>
+      <p>Tap any open game to start!</p>
+      <div class="difficulty-filters-row" id="difficultyFiltersRow" style="display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap;">
+        <button type="button" class="filter-chip-btn active" data-filter="all">All 15 Games</button>
+        <button type="button" class="filter-chip-btn" data-filter="Easy">🟢 Easy</button>
+        <button type="button" class="filter-chip-btn" data-filter="Easy–Medium">🟡 Easy–Medium</button>
+        <button type="button" class="filter-chip-btn" data-filter="Medium">🟠 Medium</button>
+        <button type="button" class="filter-chip-btn" data-filter="Medium–Advanced">🟣 Advanced</button>
+      </div>
+    </section>
+
+    <div class="worlds-map-grid" id="worldsMapContainer">
+      <!-- Dynamically populated by kids.js with simple visual game cards -->
+    </div>
+  </main>
+
+  <!-- Game Arena Modal (Interactive Mini-Games) -->
+  <div id="gameArenaModal" class="game-modal-overlay hidden">
+    <div class="game-arena-box">
+      <button class="modal-close-btn" id="closeArenaBtn">&times;</button>
+      
+      <div class="arena-header">
+        <span class="arena-level-tag" id="arenaLevelTag">World 1 &bull; Level 1</span>
+        <span style="font-weight: 800; color: #f59e0b;" id="arenaPointsTag">+20 Points ⭐</span>
+      </div>
+
+      <div class="arena-story-bubble" id="arenaStoryBubble">
+        🤖 Robo-Buddy is ready to play!
+      </div>
+
+      <h3 class="arena-question" id="arenaQuestionText" style="margin-bottom: 20px;">
+        Interactive AI Game Mission
+      </h3>
+
+      <!-- Dynamic Mini-Game Content Area -->
+      <div id="arenaPlayArea"></div>
+
+      <!-- Feedback Area -->
+      <div id="arenaFeedback" class="arena-feedback"></div>
+
+      <!-- Level Completion Celebration View (Shown upon solving) -->
+      <div id="arenaCelebrationView" class="celebration-view" style="display: none;">
+        <div style="font-size: 3rem; margin-bottom: 8px;">🎉🎈🥳</div>
+        <h2 style="font-size: 2rem; color: #0f172a; margin-bottom: 8px;">Level Complete!</h2>
+        <p style="font-size: 1.1rem; color: #475569; margin-bottom: 20px;">
+          You did a fantastic job solving this AI challenge!
+        </p>
+
+        <div class="celeb-stars-row" id="celebStarsRow">
+          <span class="celeb-star active">⭐</span>
+          <span class="celeb-star active">⭐</span>
+          <span class="celeb-star active">⭐</span>
+        </div>
+
+        <div style="font-size: 1.25rem; font-weight: 800; color: #10b981; margin-bottom: 24px;" id="celebScoreGained">
+          +20 Points Earned!
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <button class="btn-kids-3d btn-kids-green" id="nextLevelBtn">
+            Next Level ➡️
+          </button>
+          <button class="btn-kids-3d btn-kids-white" onclick="game.openGame(game.currentGame.id)">
+            🔄 Replay Level
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Challenge Modal -->
+  <div id="dailyModal" class="game-modal-overlay hidden">
+    <div class="game-arena-box" style="max-width: 620px;">
+      <button class="modal-close-btn" id="closeDailyBtn">&times;</button>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <span style="font-size: 3rem;">⚡</span>
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #0f172a;">Today's Daily Challenge</h2>
+        <p style="font-size: 0.95rem; color: #64748b;">Complete these 3 quick activities to win +50 Stars!</p>
+      </div>
+
+      <div class="daily-activities-list" id="dailyActivitiesList"></div>
+
+      <button class="btn-kids-3d btn-kids-green" style="width: 100%;" id="claimDailyRewardBtn">
+        🎁 Claim +50 Daily Stars!
+      </button>
+    </div>
+  </div>
+
+  <!-- Rewards Badges Showcase Modal -->
+  <div id="rewardsModal" class="game-modal-overlay hidden">
+    <div class="game-arena-box" style="max-width: 720px;">
+      <button class="modal-close-btn" id="closeRewardsBtn">&times;</button>
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span style="font-size: 3rem;">🏆</span>
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #0f172a;">My AI Explorer Rewards</h2>
+        <p style="font-size: 0.95rem; color: #64748b;">Collect stars and finish worlds to unlock special badges!</p>
+      </div>
+
+      <div class="badges-showcase-grid" id="badgesGridContainer"></div>
+    </div>
+  </div>
+
+  <!-- Child Sign-In & Register Modal (Name, Age, Standard - No Gmail needed!) -->
+  <div id="childProfileModal" class="game-modal-overlay hidden">
+    <div class="game-arena-box" style="max-width: 500px; text-align: center;">
+      <button class="modal-close-btn" id="closeProfileModalBtn">&times;</button>
+      <div style="font-size: 3.2rem; margin-bottom: 8px;">🎈👦🤖</div>
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+        Who is Learning Today?
+      </h2>
+      <p style="font-size: 0.92rem; color: #64748b; margin-bottom: 20px;">
+        Enter your name, age, and class to track your daily stars, badges, and learning journey! <strong>(No email required!)</strong>
+      </p>
+
+      <form id="childProfileForm" style="text-align: left;">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: 800; font-size: 0.9rem; margin-bottom: 6px; color: #334155;">
+            👤 What is your Name?
+          </label>
+          <input type="text" id="childNameInput" placeholder="Enter your name (e.g. Aarav, Maya...)" required 
+            style="width: 100%; padding: 12px 14px; border: 2.5px solid #cbd5e1; border-radius: 12px; font-size: 1.05rem; font-weight: 700; outline: none;" />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <label style="display: block; font-weight: 800; font-size: 0.9rem; margin-bottom: 6px; color: #334155;">
+              🎂 Your Age:
+            </label>
+            <select id="childAgeInput" required style="width: 100%; padding: 10px; border: 2.5px solid #cbd5e1; border-radius: 12px; font-size: 0.95rem; font-weight: 700; outline: none; background: white;">
+              <option value="5">5 Years</option>
+              <option value="6">6 Years</option>
+              <option value="7">7 Years</option>
+              <option value="8" selected>8 Years</option>
+              <option value="9">9 Years</option>
+              <option value="10">10 Years</option>
+              <option value="11">11 Years</option>
+              <option value="12">12 Years</option>
+              <option value="13">13+ Years</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 800; font-size: 0.9rem; margin-bottom: 6px; color: #334155;">
+              🏫 Standard / Class:
+            </label>
+            <select id="childGradeInput" required style="width: 100%; padding: 10px; border: 2.5px solid #cbd5e1; border-radius: 12px; font-size: 0.95rem; font-weight: 700; outline: none; background: white;">
+              <option value="UKG / LKG">UKG / LKG</option>
+              <option value="1st Standard">1st Standard</option>
+              <option value="2nd Standard">2nd Standard</option>
+              <option value="3rd Standard" selected>3rd Standard</option>
+              <option value="4th Standard">4th Standard</option>
+              <option value="5th Standard">5th Standard</option>
+              <option value="6th Standard">6th Standard</option>
+              <option value="7th Standard">7th Standard</option>
+              <option value="8th Standard">8th Standard</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mascot Avatar Picker -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 800; font-size: 0.9rem; margin-bottom: 8px; color: #334155;">
+            🎨 Pick Your Explorer Mascot:
+          </label>
+          <div style="display: flex; gap: 8px; justify-content: space-between;" id="avatarPickerGroup">
+            <button type="button" class="avatar-opt-btn selected" data-avatar="🤖">🤖</button>
+            <button type="button" class="avatar-opt-btn" data-avatar="🚀">🚀</button>
+            <button type="button" class="avatar-opt-btn" data-avatar="🐱">🐱</button>
+            <button type="button" class="avatar-opt-btn" data-avatar="🦁">🦁</button>
+            <button type="button" class="avatar-opt-btn" data-avatar="🐼">🐼</button>
+            <button type="button" class="avatar-opt-btn" data-avatar="🦄">🦄</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-kids-3d btn-kids-green" style="width: 100%; font-size: 1.15rem; padding: 14px;">
+          🎮 Save Profile & Let's Play! ➡️
+        </button>
+        <button type="button" id="modalResetProgressBtn" style="margin-top: 10px; width: 100%; font-size: 0.88rem; padding: 9px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #64748b; font-weight: 700; cursor: pointer;">
+          🔄 Reset My Progress to 0 Games
+        </button>
+      </form>
+
+      <!-- Existing Registered Children Quick Switch -->
+      <div id="savedKidsContainer" style="margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 14px; display: none;">
+        <span style="font-size: 0.82rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 8px;">
+          👥 Or click your name to continue:
+        </span>
+        <div id="savedKidsChips" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Page Custom Logout Confirmation Dialog -->
+  <div id="logoutConfirmModal" class="game-modal-overlay hidden">
+    <div style="background: white; border-radius: 24px; padding: 28px 24px; max-width: 440px; width: 92vw; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 4px solid #fca5a5; animation: popIn 0.25s ease;">
+      <div style="font-size: 3.2rem; margin-bottom: 8px;">🚪👋</div>
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;" id="logoutConfirmTitle">
+        Log out from this player profile?
+      </h3>
+      <p style="font-size: 0.98rem; color: #64748b; margin-bottom: 22px;">
+        Are you sure you want to log out and switch to another student?
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn-kids-3d btn-kids-white" id="cancelLogoutBtn" style="padding: 10px 22px; font-size: 1rem;">
+          ❌ No, Stay Here
+        </button>
+        <button type="button" class="btn-kids-3d" id="confirmLogoutBtn" style="background: #ef4444; border: 2px solid #dc2626; color: white; padding: 10px 24px; font-size: 1rem;">
+          🚪 Yes, Log Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Page Custom Reset Progress Confirmation Dialog -->
+  <div id="resetConfirmModal" class="game-modal-overlay hidden">
+    <div style="background: white; border-radius: 24px; padding: 28px 24px; max-width: 440px; width: 92vw; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 4px solid #fed7aa; animation: popIn 0.25s ease;">
+      <div style="font-size: 3.2rem; margin-bottom: 8px;">🔄⭐</div>
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;" id="resetConfirmTitle">
+        Reset Progress to 0 Games?
+      </h3>
+      <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 22px;">
+        This will restart your game stars back to 0 so you can play again fresh.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn-kids-3d btn-kids-white" id="cancelResetBtn" style="padding: 10px 22px; font-size: 1rem;">
+          ❌ Cancel
+        </button>
+        <button type="button" class="btn-kids-3d" id="confirmResetBtn" style="background: #f97316; border: 2px solid #ea580c; color: white; padding: 10px 24px; font-size: 1rem;">
+          🔄 Yes, Reset to 0
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Data and Game Engine -->
+  <script src="kids_data.js"></script>
+  <script src="kids.js"></script>
+</body>
+</html>
