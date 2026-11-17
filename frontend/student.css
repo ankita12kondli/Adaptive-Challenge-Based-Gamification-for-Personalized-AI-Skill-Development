@@ -1083,7 +1083,8 @@ body {
     margin: 8mm;
   }
 
-  html, body {
+  html,
+  body {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;
@@ -1093,8 +1094,8 @@ body {
     font-size: 14pt;
   }
 
-  body > header,
-  body > main,
+  body>header,
+  body>main,
   #collegeStudyModal,
   #conceptMapModal,
   #codePlaygroundModal,
@@ -1160,6 +1161,7 @@ body {
   .student-hero-inner {
     grid-template-columns: 1fr;
   }
+
   .topics-grid {
     grid-template-columns: 1fr;
   }
