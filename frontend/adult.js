@@ -18,6 +18,16 @@ const AdultState = {
       } catch (e) {}
     }
 
+    // Strict Portal Role Guard: If logged in as Student or Kid, prevent access to Adult Zone
+    if (activeUser && activeUser.role && activeUser.role !== 'adult' && activeUser.role !== 'admin') {
+      console.warn('Unauthorized role attempting to access Adult Zone:', activeUser.role);
+      const roleName = activeUser.role === 'kid' ? 'Kids' : 'Student';
+      const redirectPage = activeUser.role === 'kid' ? 'kids.html' : 'student.html';
+      alert(`⛔ Access Restricted: You are signed in as a ${roleName} account (${activeUser.email || activeUser.name}).\n\nThe Adult Learning Zone is reserved for Adult (35+) accounts.\n\nRedirecting you to your ${roleName} Learning Zone.`);
+      window.location.href = redirectPage;
+      return;
+    }
+
     if (saved) {
       try {
         this.currentLearner = JSON.parse(saved);

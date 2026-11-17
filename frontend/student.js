@@ -17,6 +17,16 @@ const StudentState = {
       } catch (e) {}
     }
 
+    // Strict Portal Role Guard: If logged in as Adult or Kid, prevent access to Student Hub
+    if (activeUser && activeUser.role && activeUser.role !== 'student' && activeUser.role !== 'admin') {
+      console.warn('Unauthorized role attempting to access Student Hub:', activeUser.role);
+      const roleName = activeUser.role === 'kid' ? 'Kids' : 'Adult';
+      const redirectPage = activeUser.role === 'kid' ? 'kids.html' : 'adult.html';
+      alert(`⛔ Access Restricted: You are signed in as an ${roleName} account (${activeUser.email || activeUser.name}).\n\nThe College AI Learning Hub is reserved for Student accounts.\n\nRedirecting you to your ${roleName} Learning Zone...`);
+      window.location.href = redirectPage;
+      return;
+    }
+
     if (saved) {
       try {
         this.currentStudent = JSON.parse(saved);

@@ -89,16 +89,45 @@ const KidsState = {
       this.sanitizeProfile(this.allProfiles[name]);
     });
 
-    const activeName = localStorage.getItem('skillspring_active_child');
-    if (activeName && this.allProfiles[activeName]) {
-      this.currentProfile = this.allProfiles[activeName];
+    const activeUserRaw = localStorage.getItem('skillspring_active_user');
+    let activeKidUser = null;
+    if (activeUserRaw) {
+      try {
+        const parsed = JSON.parse(activeUserRaw);
+        if (parsed && parsed.role === 'kid') activeKidUser = parsed;
+      } catch (e) {}
+    }
+
+    if (activeKidUser && activeKidUser.name) {
+      if (!this.allProfiles[activeKidUser.name]) {
+        this.allProfiles[activeKidUser.name] = {
+          name: activeKidUser.name,
+          age: 10,
+          standard: 'Middle School',
+          avatar: '🤖',
+          completedGames: {},
+          unlockedGames: ['ai_or_not'],
+          totalStars: 0,
+          totalScore: 0,
+          unlockedBadges: [],
+          streakDays: 1,
+          lastPlayedDate: new Date().toISOString().split('T')[0]
+        };
+      }
+      this.currentProfile = this.allProfiles[activeKidUser.name];
+      localStorage.setItem('skillspring_active_child', this.currentProfile.name);
     } else {
-      const names = Object.keys(this.allProfiles);
-      if (names.length > 0) {
-        this.currentProfile = this.allProfiles[names[0]];
-        localStorage.setItem('skillspring_active_child', this.currentProfile.name);
+      const activeName = localStorage.getItem('skillspring_active_child');
+      if (activeName && this.allProfiles[activeName]) {
+        this.currentProfile = this.allProfiles[activeName];
       } else {
-        this.currentProfile = null;
+        const names = Object.keys(this.allProfiles);
+        if (names.length > 0) {
+          this.currentProfile = this.allProfiles[names[0]];
+          localStorage.setItem('skillspring_active_child', this.currentProfile.name);
+        } else {
+          this.currentProfile = null;
+        }
       }
     }
 

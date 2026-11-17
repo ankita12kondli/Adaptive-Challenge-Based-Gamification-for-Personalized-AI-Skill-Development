@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tabRegisterBtn) tabRegisterBtn.addEventListener('click', () => activateTab('register'));
 
   // ----------------------------------------------------
-  // User Login Form Submit
+  // User Login Form Submit (Strict Role-Based Access Control)
   // ----------------------------------------------------
   if (userLoginForm) {
     userLoginForm.addEventListener('submit', async (e) => {
@@ -197,7 +197,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rawUsers) usersRegistry = JSON.parse(rawUsers);
       } catch (err) {}
 
+      const roleLabels = {
+        student: 'Student (College AI & Programming)',
+        adult: 'Adult 35+ (Practical & Daily AI)',
+        kid: 'Kids (Ages 7–14 Visual AI)'
+      };
+
       const foundUser = usersRegistry[email.toLowerCase()];
+
+      // 1. Strict Role Verification from local registry
+      if (foundUser && foundUser.role && foundUser.role !== 'admin' && foundUser.role !== selectedRole) {
+        const actualTrack = roleLabels[foundUser.role] || foundUser.role;
+        const attemptedTrack = roleLabels[selectedRole] || selectedRole;
+        showOnScreenNotice(
+          'userModalNotice',
+          `⛔ <strong>Access Denied: Role Mismatch!</strong><br>` +
+          `The account <strong>${email}</strong> is registered under the <strong>${actualTrack}</strong>.<br>` +
+          `You cannot log into the <strong>${attemptedTrack}</strong> with this account.<br>` +
+          `Please change "I am learning as" to <strong>${actualTrack}</strong> to continue.`,
+          'error'
+        );
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Sign In & Continue ➡️';
+        }
+        return;
+      }
+
       let resolvedName = (foundUser && foundUser.name)
         ? foundUser.name
         : (email ? email.split('@')[0] : 'Learner');
@@ -207,26 +233,70 @@ document.addEventListener('DOMContentLoaded', () => {
         resolvedName = resolvedName.charAt(0).toUpperCase() + resolvedName.slice(1);
       }
 
-      // Default user model
+      // User model
       let loggedUser = {
         name: resolvedName,
         email: email,
-        role: selectedRole,
+        role: (foundUser && foundUser.role) ? foundUser.role : selectedRole,
         current_level: 'medium',
         total_points: 0
       };
 
-      // Attempt backend API call with seamless fallback
+      // 2. Attempt backend API call with strict role verification
       try {
         const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ email, password, role: selectedRole })
         });
+
+        if (response.status === 403) {
+          const errData = await response.json();
+          showOnScreenNotice(
+            'userModalNotice',
+            `⛔ <strong>Access Denied!</strong><br>${errData.error || 'Your account does not match this learning track.'}`,
+            'error'
+          );
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Sign In & Continue ➡️';
+          }
+          return;
+        }
+
+        if (response.status === 401) {
+          showOnScreenNotice(
+            'userModalNotice',
+            `❌ <strong>Invalid Email or Password!</strong><br>Please verify your email address and password.`,
+            'error'
+          );
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Sign In & Continue ➡️';
+          }
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
-          if (data.user && data.user.name) {
-            loggedUser.name = data.user.name;
+          if (data.user) {
+            if (data.user.role && data.user.role !== 'admin' && data.user.role !== selectedRole) {
+              const actualTrack = roleLabels[data.user.role] || data.user.role;
+              const attemptedTrack = roleLabels[selectedRole] || selectedRole;
+              showOnScreenNotice(
+                'userModalNotice',
+                `⛔ <strong>Access Denied: Role Mismatch!</strong><br>` +
+                `This account is registered under <strong>${actualTrack}</strong>. You cannot log into <strong>${attemptedTrack}</strong>.`,
+                'error'
+              );
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Sign In & Continue ➡️';
+              }
+              return;
+            }
+            if (data.user.name) loggedUser.name = data.user.name;
+            if (data.user.role) loggedUser.role = data.user.role;
           }
           if (data.token) {
             localStorage.setItem('skillspring_token', data.token);
@@ -236,15 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Operating in local-first demo mode:', err.message);
       }
 
-      // Ensure role honors user selection
-      if (!loggedUser.role || (selectedRole === 'adult' && loggedUser.role !== 'adult')) {
-        loggedUser.role = selectedRole;
-      }
-
       // Save to localStorage
       localStorage.setItem('skillspring_active_user', JSON.stringify(loggedUser));
 
-      if (loggedUser.role === 'adult' || selectedRole === 'adult') {
+      if (loggedUser.role === 'adult') {
         let existingAdult = {};
         try {
           const raw = localStorage.getItem('skillspring_adult_learner');
@@ -267,7 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         localStorage.setItem('skillspring_adult_learner', JSON.stringify(adultProfile));
 
-        // Display on-screen in-page notice (NO BROWSER POPUP)
         showOnScreenNotice(
           'userModalNotice',
           `✅ <strong>Logged in successfully!</strong><br>Welcome back, <strong>${adultProfile.name}</strong>! Redirecting to Adult Learning Zone...`,
@@ -276,9 +340,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           window.location.href = 'adult.html';
-        }, 900);
+        }, 800);
+      } else if (loggedUser.role === 'kid') {
+        // Child path
+        localStorage.setItem('skillspring_active_child', loggedUser.name);
+        showOnScreenNotice(
+          'userModalNotice',
+          `✅ <strong>Logged in successfully!</strong><br>Welcome, <strong>${loggedUser.name}</strong>! Redirecting to Kids AI Discovery Zone...`,
+          'success'
+        );
+
+        setTimeout(() => {
+          window.location.href = 'kids.html';
+        }, 800);
       } else {
         // Student path
+        let existingStudent = {};
+        try {
+          const raw = localStorage.getItem('skillspring_student_learner');
+          if (raw) existingStudent = JSON.parse(raw);
+        } catch (err) {}
+
+        const isSameStudent = existingStudent.email === email || (!existingStudent.email && existingStudent.name === loggedUser.name);
+        const studentProfile = {
+          name: loggedUser.name,
+          email: loggedUser.email,
+          role: 'student',
+          college: existingStudent.college || 'Department of Computer Science & Engineering',
+          degree: existingStudent.degree || 'MCA / B.Tech Computer Science',
+          stars: isSameStudent ? (existingStudent.stars || 0) : 0,
+          completedTopics: isSameStudent ? (existingStudent.completedTopics || []) : [],
+          quizScores: isSameStudent ? (existingStudent.quizScores || {}) : {},
+          badges: isSameStudent ? (existingStudent.badges || []) : [],
+          streak: isSameStudent ? (existingStudent.streak || 1) : 1,
+          lastActiveDate: new Date().toLocaleDateString('en-GB')
+        };
+        localStorage.setItem('skillspring_student_learner', JSON.stringify(studentProfile));
+
         showOnScreenNotice(
           'userModalNotice',
           `✅ <strong>Logged in successfully!</strong><br>Welcome back, <strong>${loggedUser.name}</strong>! Redirecting to Student Learning Zone...`,
@@ -287,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           window.location.href = 'student.html';
-        }, 900);
+        }, 800);
       }
     });
   }
@@ -318,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.innerText = 'Creating Account...';
       }
 
-      // Save into registered users registry so future logins know this name
+      // Save into registered users registry so future logins enforce this role
       let usersRegistry = {};
       try {
         const rawUsers = localStorage.getItem('skillspring_users');
@@ -376,7 +474,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         localStorage.setItem('skillspring_adult_learner', JSON.stringify(adultProfile));
 
-        // Display on-screen in-page notice (NO BROWSER POPUP)
         showOnScreenNotice(
           'userModalNotice',
           `🎉 <strong>Account created successfully!</strong><br>Welcome, <strong>${name}</strong>! Redirecting to Adult Learning Zone...`,
@@ -385,9 +482,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           window.location.href = 'adult.html';
-        }, 1000);
+        }, 900);
+      } else if (role === 'kid') {
+        // Child registration
+        let childProfiles = {};
+        try {
+          const raw = localStorage.getItem('skillspring_child_profiles');
+          if (raw) childProfiles = JSON.parse(raw);
+        } catch (e) {}
+        childProfiles[name] = {
+          name: name,
+          age: 10,
+          standard: 'Middle School',
+          avatar: '🤖',
+          completedGames: {},
+          unlockedGames: ['ai_or_not'],
+          totalStars: 0,
+          totalScore: 0,
+          unlockedBadges: [],
+          streakDays: 1,
+          lastPlayedDate: new Date().toISOString().split('T')[0]
+        };
+        localStorage.setItem('skillspring_child_profiles', JSON.stringify(childProfiles));
+        localStorage.setItem('skillspring_active_child', name);
+
+        showOnScreenNotice(
+          'userModalNotice',
+          `🎉 <strong>Account created successfully!</strong><br>Welcome, <strong>${name}</strong>! Redirecting to Kids AI Discovery Zone...`,
+          'success'
+        );
+
+        setTimeout(() => {
+          window.location.href = 'kids.html';
+        }, 900);
       } else {
         // Student path
+        const studentProfile = {
+          name: name,
+          email: email,
+          role: 'student',
+          college: 'Department of Computer Science & Engineering',
+          degree: 'MCA / B.Tech Computer Science',
+          stars: 0,
+          completedTopics: [],
+          quizScores: {},
+          badges: [],
+          streak: 1,
+          lastActiveDate: new Date().toLocaleDateString('en-GB')
+        };
+        localStorage.setItem('skillspring_student_learner', JSON.stringify(studentProfile));
+
         showOnScreenNotice(
           'userModalNotice',
           `🎉 <strong>Account created successfully!</strong><br>Welcome, <strong>${name}</strong>! Redirecting to Student Learning Zone...`,
@@ -396,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           window.location.href = 'student.html';
-        }, 1000);
+        }, 900);
       }
     });
   }

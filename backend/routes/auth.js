@@ -11,7 +11,7 @@ const { pool } = require('../config/db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'skillspring_jwt_secret_key_2026';
 
-// Register User (Student / Adult)
+// Register User (Student / Adult / Kid)
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -19,7 +19,9 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
 
-    const assignedRole = ['student', 'adult', 'admin'].includes(role) ? role : 'student';
+    const assignedRole = ['student', 'adult', 'kid', 'child', 'admin'].includes(role)
+      ? (role === 'child' ? 'kid' : role)
+      : 'student';
 
     try {
       // Check if user already exists in MySQL
@@ -56,10 +58,10 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login User
+// Login User with strict Role-Based Access Control (RBAC)
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
@@ -86,6 +88,20 @@ router.post('/login', async (req, res) => {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
+      // Strict Role Validation: verify requested role matches user's registered role
+      if (role && user.role !== 'admin' && user.role !== role) {
+        const roleLabels = {
+          student: 'Student (College AI Hub)',
+          adult: 'Adult 35+ Learning Zone',
+          kid: 'Kids Learning Zone'
+        };
+        const actual = roleLabels[user.role] || user.role;
+        const requested = roleLabels[role] || role;
+        return res.status(403).json({
+          error: `Access Denied: This account (${user.email}) is registered under the ${actual}. You cannot log into the ${requested} with this account. Please select "${actual}" in the dropdown.`
+        });
+      }
+
       const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
       return res.json({
         message: 'Login successful',
@@ -95,9 +111,10 @@ router.post('/login', async (req, res) => {
     } catch (dbErr) {
       console.warn('MySQL fallback for login:', dbErr.message);
       // Demo fallback
+      const fallbackRole = role || 'student';
       return res.json({
         message: 'Login successful (demo mode)',
-        user: { id: 101, name: email.split('@')[0], email, role: 'student', current_level: 'medium', total_points: 50 }
+        user: { id: 101, name: email.split('@')[0], email, role: fallbackRole, current_level: 'medium', total_points: 50 }
       });
     }
   } catch (err) {
